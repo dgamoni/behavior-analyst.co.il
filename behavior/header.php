@@ -29,7 +29,7 @@
 
 <?php do_action('flatsome_before_header'); ?>
 
-<?php if (!preg_match('#^create-new-account-form(/.+)?$#', $wp->request)) { ?>
+<?php //if (!preg_match('#^create-new-account-form(/.+)?$#', $wp->request)) { ?>
 
 <header id="header" class="header <?php flatsome_header_classes();  ?>">
    <div class="header-wrapper">
@@ -39,7 +39,7 @@
    </div><!-- header-wrapper-->
 </header>
 
-<?php } ?>
+<?php //} ?>
 
 <?php do_action('flatsome_after_header'); ?>
 

@@ -226,7 +226,7 @@ function awpqsf_ajax()
     /* Categoriese
    ---------------------------------- */
     if($ctegories == ''){
-        $ctegories = [-19, -1];
+        $ctegories = [-19, -1, -26];
     }
 
     /* Populations key value
@@ -254,7 +254,8 @@ function awpqsf_ajax()
                     'post_status' => 'publish',
                     'paged'=> $pagenumber,
                     'posts_per_page' => 10,
-                    'cat' => -19,
+                    // 'cat' => -19,
+                    'cat' => array(-19, -1, -26),
                     'orderby' => 'title',
                     'order'   => 'ASC',
                 )
@@ -534,10 +535,17 @@ function awpqsf_ajax()
 
                 foreach($post_categories as $c){
                     $cat = get_category( $c );
+                    
+                    if($cat->cat_ID == 26 || $cat->cat_ID == 1 || $cat->cat_ID == 19) {
+                        $style = 'style="color:red;"';
+                    } else {
+                        $style = '';
+                    }
+
                     if($cat->cat_ID !== 1){
-                        echo  $cat->name . "<span> , </span>";
+                        echo  "<span ".$style." class='cat_id-".$cat->cat_ID."'>".$cat->name . "</span><span> , </span>";
                     }else{
-                        echo  $cat->name . ': ' . strip_tags(get_field('ather')) . "<span> , </span>";
+                        echo  "<span ".$style." class='cat_id-".$cat->cat_ID."'>".$cat->name."</span>"."" . ': ' . strip_tags(get_field('ather')) . "<span> , </span>";
                     }
                 }
                 echo '</span></div></div>';
@@ -1216,3 +1224,24 @@ remove_filter("woocommerce_stock_amount", "intval");
 add_filter("woocommerce_stock_amount", "floatval");
 
 
+
+add_filter( 'woocommerce_min_password_strength', 'reduce_woocommerce_min_strength_requirement' );
+    function reduce_woocommerce_min_strength_requirement( $strength ) {
+    return 2;
+}
+
+add_filter( 'wc_password_strength_meter_params', 'reduce_strength_meter_settings' );
+function reduce_strength_meter_settings( $data ) {
+
+    return array_merge( $data, array(
+        'min_password_strength' => 2,
+        'i18n_password_hint' => 'רמז: הסיסמה צריכה להיות בת שבע תווים לפחות. כדי לחזק אותה, השתמשו באותיות קטנות וגדולות, מספרים וסימנים כגון ! ” ? $ % ^ & ).'
+    ) );
+
+}
+
+
+   //  wp_update_user( array(
+   //      'ID' => 297,
+   //      'user_login' => 'maorazani1993@gmail.com'
+   // ) );  

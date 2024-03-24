@@ -3,11 +3,15 @@
 /* Template Name: Protected By Membership */
 
 $required_membership = get_field('required_membership');
+//var_dump($required_membership);
 
 if (is_user_logged_in()) {
     $account_number = get_user_meta(get_current_user_id(), 'account_number', true);
+    //$account_number = get_user_meta(92, 'account_number', true); //test
+    //var_dump($account_number[0]);
 
-    if ($account_number[0] !== $required_membership) {
+    // if ($account_number[0] !== $required_membership) {
+    if ( !in_array($account_number[0], $required_membership) ) {
         get_header();
         do_action( 'flatsome_before_page' ); ?>
         <?php if ($required_membership_notification = get_field('required_membership_notification', get_the_ID()))
