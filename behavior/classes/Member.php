@@ -33,13 +33,17 @@ class Member {
     private function initHooks() {
         add_filter( 'bnfw_trigger_welcome-email_notification', [$this, 'filterByFormType'], 1, 3 );
         add_filter( 'bnfw_registration_email_message', [$this, 'customizeUsersEmail'], 1, 2 );
-        add_filter( 'wp_new_user_notification_email_admin', [$this, 'customizeAdminEmail'], 1, 3 );
+        add_filter( 'wp_new_user_notification_email_admin', [$this, 'customizeAdminEmail'], 10, 3 );
         add_filter( 'wp_mail_from', [$this, 'wpb_sender_email'] );
         add_filter( 'wp_mail_from_name', [$this, 'wpb_sender_name'] );
     }
 
     public function wpb_sender_email( $original_email_address ) {
         return 'no-reply@behavior-analyst.co.il';
+    }
+
+    public function eswc_var_dropdown_args( $filter_args, $email ) {
+        return $email;
     }
 
     public function wpb_sender_name( $original_email_from ) {
@@ -90,7 +94,7 @@ class Member {
 
                 $this->setUserData($user_id, $membership_data);
 
-                $this->sendMembershipData($membership_data);
+                $this->sendMembershipData($membership_data, $params['email'] );
 
                 $this->subscribeMember($params['email'], $params['firstname'], $params['lastname'], $params['phone'], $params['payfor']);
             }
@@ -105,11 +109,12 @@ class Member {
         return $user_id;
     }
 
-    private function sendMembershipData($membership_data) {
+    private function sendMembershipData($membership_data, $email ) {
         $html = '';
 
         foreach ($membership_data as $key => $value) {
-            $value = utf8_encode($value);
+            // $value = utf8_encode($value);
+            $value = $value;
             $html .= <<<HTML
                 <p>
                     <span><b>{$key}</b></span> - <span>{$value}</span>
@@ -119,11 +124,32 @@ HTML;
 
         }
 
+        $headers = array(
+            'From: '.$email.'', 
+            //'CC: ccc@example.com', 
+            //'BCC: eee@example.pro', 
+        );
+
+        add_filter( 'wp_mail_from', function( $filter_args ) use ( $email ) {
+                return $this->eswc_var_dropdown_args( $filter_args, $email );
+            }
+        );
+
+
+
+
         add_filter( 'wp_mail_content_type', [$this, 'set_html_content_type'] );
 
-        wp_mail( $this->additional_emails, 'New member', $html );
+
+        wp_mail( $this->additional_emails, 'New member', $html);
 
         remove_filter( 'wp_mail_content_type', [$this, 'set_html_content_type'] );
+
+        remove_filter( 'wp_mail_from', function( $filter_args ) use ( $email ) {
+                return $this->eswc_var_dropdown_args( $filter_args, $email );
+            }
+        );
+
     }
 
     public function set_html_content_type() {
@@ -214,6 +240,7 @@ HTML;
 
         $phone_number = !empty($params['phone']) ? $params['phone'] : '';
         update_user_meta($user_id, 'phone_number', $phone_number);
+        update_user_meta($user_id, 'active_member', 'true');
     }
 
     public function filterByFormType($triggering, $settings, $user) {
@@ -234,6 +261,8 @@ HTML;
     }
 
     public function customizeAdminEmail($wp_new_user_notification_email, $user, $blogname) {
+        //$wp_new_user_notification_email['headers'] = "From: myBlog <".$user->email.">";
+        //$wp_new_user_notification_email['to'] = 'monothemes@gmail.com';
         $wp_new_user_notification_email['subject'] = sprintf( '[%s] New member %s registered.', $blogname, $user->user_login );
         $wp_new_user_notification_email['message'] = <<<HTML
             Account Number - {$this->account_number}
@@ -270,6 +299,7 @@ HTML;
 
     public function getMembers($filter) {
         $filter = !empty($filter) ? $filter . '&meta_key=' . $this->meta_key_number_name : 'meta_key=' . $this->meta_key_number_name;
+        //var_dump($filter);
 
         return $members = get_users($filter);
     }
@@ -405,6 +435,43 @@ HTML;
 
         return $new_price;
     }
+
+    public static function getMembershipPrice_plus($coupon_name, $price) {
+        $new_price = false;
+
+        $coupons = MembersDiscounts::getCoupons();
+        //error_log(print_r($coupons, true));
+
+        if (!empty($coupons)) {
+            foreach ($coupons as $key => $coupon) {
+                if ($coupon_name === $coupon['name'] && $coupon['coupon_status'] == 'on') {
+                    $new_price = $coupon['value'];
+
+                    $opt = json_decode(get_option( 'membership_coupons' ));
+                    $stat = false;
+                    foreach ($opt as $key => $value) {
+                        if ($value->name == $coupon_name && $value->coupon_multiple == 'off' ) {
+                            $opt[$key]->coupon_status = 'off';
+                            $stat = true;
+                        }
+                    }
+                    if ($stat) {
+                        update_option('membership_coupons', json_encode($opt) );
+                    }
+                    
+
+                }
+            }
+        }
+
+        //error_log(print_r($new_price, true)); 
+
+        // var_dump(json_encode($opt) );
+        // die();
+
+        return $new_price;
+    }    
+
 
     public function deleteMember($user_id) {
         delete_user_meta($user_id, $this->meta_key_number_name);

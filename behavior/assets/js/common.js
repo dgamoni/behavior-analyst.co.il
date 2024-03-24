@@ -103,6 +103,7 @@
                         $('#pelepay-membership-amount').val(data.price);
                         coupon_field.prop('disabled', true);
                         self.off('click');
+                        $('.newprice').text(data.price);
                     } else {
                         message.text(data.message);
                         message.addClass('error');

@@ -707,7 +707,7 @@ function get_discount_price() {
     );
 
     if (!empty($_POST['coupon_name']) && !empty($_POST['price'])) {
-        $price = Member::getMembershipPrice($_POST['coupon_name'], $_POST['price']);
+        $price = Member::getMembershipPrice_plus($_POST['coupon_name'], $_POST['price']);
 
         if (!empty($price)) {
             $response = array(
@@ -1239,6 +1239,9 @@ function reduce_strength_meter_settings( $data ) {
     ) );
 
 }
+
+// load core functions
+require_once get_stylesheet_directory() . '/core/load.php';
 
 
    //  wp_update_user( array(

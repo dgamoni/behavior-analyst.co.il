@@ -73,40 +73,63 @@ HTML;
                 </form>
                 
                 <script>
-                    jQuery('#settings-form').on('submit', function() {
+                    jQuery('#settings-form').on('submit', function(event) {
+                      //event.preventDefault();
                           var existed_coupons = jQuery('.coupon');
                           var name = jQuery(this).find('#coupon_name').val();
                           var value = jQuery(this).find('#coupon_value').val();
                           var option = jQuery(this).find('#membership_coupons');
                           var data = [];
-                          
+                          console.log(existed_coupons);
+
+                          if ( jQuery(this).find('#coupon_multiple').is(':checked') ) {
+                             var coupon_multiple = 'on';
+                          } else {
+                             var coupon_multiple = 'off';
+                          }
+
                           if (existed_coupons.length > 0) {
                               jQuery.each(existed_coupons, function(index, item) {
-                              var coupon = jQuery(item).val();
-                              var coupon_name = coupon.find('.name').val();
-                              var coupon_value = coupon.find('.value').val();
-                              
-                              if (coupon_name === name) {
-                                  return;
-                              }
-                              
-                              if (coupon_name && parseFloat(coupon_value) > 0) {
-                                data.push({
-                                    name: coupon_name,
-                                    value: coupon_value
-                                });
-                              }
-                            });
+                                    var coupon = jQuery(item).val();
+
+                                    // var coupon_name = coupon.find('.name').val();
+                                    // var coupon_value = coupon.find('.value').val();
+                                    var coupon_name = jQuery(item).find('.name').text();
+                                    var coupon_value = jQuery(item).find('.value').text();
+
+                                    var coupon_multiple = jQuery(item).find('.coupon_multiple').text();
+                                    var coupon_status = jQuery(item).find('.coupon_status').text();
+
+                                    if (coupon_name === name) {
+                                        return;
+                                    }
+                                    
+                                    if (coupon_name && parseFloat(coupon_value) > 0) {
+                                      data.push({
+                                          name: coupon_name,
+                                          value: coupon_value,
+                                          coupon_multiple: coupon_multiple,
+                                          coupon_status: coupon_status
+                                      });
+                                    }
+
+
+                              });
                           } 
                           
                           data.push({
                              name: name,
-                             value: value
+                             value: value,
+                             coupon_multiple: coupon_multiple,
+                             coupon_status: 'on'
                           }); 
                           
                           console.log(data);
                           
                           option.val(JSON.stringify(data));
+
+   
+                                                
                           return true;
                       });
                 </script>
@@ -158,12 +181,15 @@ HTML;
                         <th>№</th>
                         <th>Coupon</th>
                         <th>Value</th>
+                        <th>Multiple</th>
+                        <th>Status</th>
                     </thead>
                     <tbody>
 HTML;
         $coupons = $this->getCoupons();
 
         //error_log(print_r($coupons, true));
+        //var_dump($coupons);
 
         if (!empty($coupons)) {
             foreach ($coupons as $key => $coupon) {
@@ -174,6 +200,8 @@ HTML;
                         <td>{$number}</td>
                         <td class="name">{$coupon['name']}</td>
                         <td class="value">{$coupon['value']}</td>
+                        <td class="coupon_multiple">{$coupon['coupon_multiple']}</td>
+                        <td class="coupon_status">{$coupon['coupon_status']}</td>
                     </tr>
 HTML;
 
@@ -215,5 +243,6 @@ HTML;
         echo '<input type="hidden" id="' . self::$option_name . '" name="' . self::$option_name . '" value="" />';
         echo '<input type="text" id="coupon_name" name="coupon_name" value="" />';
         echo '<input type="text" id="coupon_value" name="coupon_value" value="" />';
+        echo '<label for="">multiple use</label><input type="checkbox" id="coupon_multiple" name="coupon_multiple" />';
     }
 }

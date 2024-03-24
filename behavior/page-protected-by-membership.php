@@ -10,22 +10,12 @@ if (is_user_logged_in()) {
     //$account_number = get_user_meta(92, 'account_number', true); //test
     //var_dump($account_number[0]);
 
-    // if ($account_number[0] !== $required_membership) {
-    if ( !in_array($account_number[0], $required_membership) ) {
-        get_header();
-        do_action( 'flatsome_before_page' ); ?>
-        <?php if ($required_membership_notification = get_field('required_membership_notification', get_the_ID()))
-        : ?>
-                
-            
-            <h2 align='center'>
-		        <?php echo $required_membership_notification; ?>
-		    </h2>
-        <?php endif; ?>
-        <?php
-        do_action( 'flatsome_after_page' );
-        get_footer();
-    } else {
+    $active_member = get_user_meta( get_current_user_id(), 'active_member', true );
+    //$active_member = get_user_meta( 92, 'active_member', true );
+    //var_dump($active_member);
+
+
+    if ( (in_array($account_number[0], $required_membership) && $active_member == 'true') || current_user_can('administrator') ) {
 
         if(flatsome_option('pages_layout') != 'default') {
 
@@ -69,6 +59,22 @@ if (is_user_logged_in()) {
 
         }
     }
+    else {
+        get_header();
+        do_action( 'flatsome_before_page' ); ?>
+        <?php if ($required_membership_notification = get_field('required_membership_notification', get_the_ID()))
+        : ?>
+                
+            
+            <h2 align='center'>
+                <?php echo $required_membership_notification; ?>
+            </h2>
+        <?php endif; ?>
+        <?php
+        do_action( 'flatsome_after_page' );
+        get_footer();        
+    }
+
 } else {
     /*wp_die("<h2 align='center'>
 		    To view this page you must first 

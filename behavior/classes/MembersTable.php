@@ -26,7 +26,8 @@ class MembersTable extends WP_List_Table {
             'membership_type' => 'Membership Type',
             'account_number' => 'Account Number',
             'payment_date' => 'Date of Payment',
-            'transaction_id' => 'Transaction ID'
+            'transaction_id' => 'Transaction ID',
+            'active' => 'Active'
         );
         return $columns;
     }
@@ -38,6 +39,7 @@ class MembersTable extends WP_List_Table {
         $this->_column_headers = array($columns, $hidden, $sortable);
         $this->screen = get_current_screen();
         $this->items = $this->getItemsData();
+        //var_dump($this->getItemsData());
         /** Process bulk action */
         $this->process_bulk_action();
     }
@@ -64,6 +66,7 @@ HTML;
             case 'membership_type':
             case 'account_number':
             case 'payment_date':
+            case 'active':
             case 'transaction_id':
                 return $item[ $column_name ];
             default:
@@ -94,10 +97,29 @@ HTML;
         $items = array();
         $filter  = $this->usort_reorder();
         $members = $this->member->getMembers($filter);
+        //var_dump($members);
+
+        //var_dump( $this->member->getMembershipData(356) );
+
 
         foreach ($members as $member) {
             $membership_data = $this->member->getMembershipData($member->ID);
             $payment_date = !empty($membership_data['payment_date']) ? get_date_from_gmt( date( 'Y-m-d H:i:s', $membership_data['payment_date'] ), 'F j, Y H:i:s' ) : '';
+            
+            //$active_member = get_field('active_member', 'user_'.$member->ID );
+            $active_member = get_user_meta( $member->ID, 'active_member', true ); 
+            if( $active_member == 'true' ) {
+                $active_member_status = 'checked'; 
+            } else {
+                $active_member_status = '';
+            }
+            // $all_meta_for_user = get_user_meta( 92 );
+            // if ( !isset($membership_data['first-name']) ) {
+            //     $membership_data['first-name'] = '';
+            // }
+            // if ( !isset($membership_data['last-name']) ) {
+            //     $membership_data['last-name'] = '';
+            // }            
 
             $items[] = array(
                 'ID' => $member->ID,
@@ -106,8 +128,13 @@ HTML;
                 'membership_type' => $membership_data['membership_type'],
                 'account_number' => $membership_data['account_number'],
                 'payment_date' => $payment_date,
-                'transaction_id' => $membership_data['transaction_index']
+                'transaction_id' => $membership_data['transaction_index'],
+                'active' => '<input class="check_active" type="checkbox" data-id="'.$member->ID.'" '.$active_member_status.' data-status="'.$active_member.'" />'
             );
+            // var_dump($member->ID);
+            // if($member->ID == 356) {
+            //     var_dump($items);
+            // }
         }
 
         if ('payment_date' === $_GET['orderby'] || 'membership_type' === $_GET['orderby']) {
@@ -123,6 +150,7 @@ HTML;
         }
 
         //error_log(print_r($items, true));
+        //var_dump($items);
 
         return $items;
     }

@@ -128,13 +128,13 @@ $html = <<<HTML
         <input type="hidden" id="pelepay-phone" name="phone" value=""/>
         <input type="hidden" id="pelepay-email" name="email" value=""/>
         <input type="hidden"
-           value="http://behavior.mysite1.co.il/create-new-account-form?payment_status=success"
+           value="https://www.behavior-analyst.co.il/create-new-account-form?payment_status=success"
            name="success_return">
         <input type="hidden"
-           value="http://behavior.mysite1.co.il/create-new-account-form?payment_status=fail"
+           value="https://www.behavior-analyst.co.il/create-new-account-form?payment_status=fail"
            name="fail_return">
         <input type="hidden"
-           value="http://behavior.mysite1.co.il/create-new-account-form?payment_status=cancel"
+           value="https://www.behavior-analyst.co.il/create-new-account-form?payment_status=cancel"
            name="cancel_return">
         <div class="field-wrapper pelepay-btn">
            <div class="block-name">לתשלום 75:</div>
