@@ -105,3 +105,15 @@ get_header();
 
 <?php get_footer(); ?>
 
+<?php 
+
+// $user = get_user_by('login', 'bigcatcode@gmail.com');
+// var_dump($user->ID);
+// $disabled = get_user_meta( $user->ID, 'active_member', true );
+// var_dump($disabled);
+// var_dump ( user_can( $user->ID, 'subscriber' ) );
+
+
+// reactivate_member_message_custom('dgamoni@gmail.com');
+
+?>

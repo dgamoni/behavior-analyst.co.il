@@ -1,3 +1,10 @@
 .nice_but.elementor-button {
 	    background-color: #FCCE77;
 }
+a.loglink {
+	text-decoration: underline;
+}
+.email a {
+	font-weight: bold;
+	color: #777777;
+}

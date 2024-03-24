@@ -1145,9 +1145,9 @@ function the_company_email( $before = '', $after = '', $echo = true, $post = nul
     $company_email = $before . $company_email . $after;
 
     if ( $echo ) {
-        echo wp_kses_post( $company_email );
+        echo '<a href="mailto:'.$company_email.'">'.wp_kses_post( $company_email ).'</a>';
     } else {
-        return $company_email;
+        return '<a href="mailto:'.$company_email.'">'.$company_email.'</a>';
     }
 }
 

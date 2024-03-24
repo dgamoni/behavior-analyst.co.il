@@ -19,6 +19,14 @@ defined( 'ABSPATH' ) || exit;
 
 global $product;
 
+// $products_ids_array = array();
+// foreach( WC()->cart->get_cart() as $cart_item ){
+//     $products_ids_array[] = $cart_item['product_id'];
+// }
+// var_dump($products_ids_array[0]);
+
+
+
 $qty_start = '<input type="button" value="-" class="minus button is-form">';
 $qty_end   = '<input type="button" value="+" class="plus button is-form">';
 
@@ -26,9 +34,9 @@ if ( empty( $max_value ) ) {
 	$max_value = 9999;
 }
 
-if (get_post_meta($product->get_id(), 'allow_decimals', true) === 'yes') {
-	$step = 0.5;
-}
+// if (get_post_meta($product->get_id(), 'allow_decimals', true) === 'yes') {
+// 	$step = 0.5;
+// }
 
 if ( $max_value && $min_value === $max_value ) {
 	?>

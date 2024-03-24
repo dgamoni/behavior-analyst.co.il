@@ -129,6 +129,8 @@ class Member {
 
                 update_user_meta($user_id, 'active_member', 'true');
                 $this->sendMembershipData($membership_data, $params['email'], true );
+                reactivate_member_message_custom($params['email']);
+                
                 //$this->subscribeMember($params['email'], $params['firstname'], $params['lastname'], $params['phone'], $params['payfor']);
                               
 
@@ -524,13 +526,13 @@ HTML;
     public function subscribeMember($user_mail, $user_fname, $user_lname, $user_phone, $user_payfor) {
         switch ($membership_type) {
             case 'A':
-                $tag = array('חברים');
+                $tag = array('חברים 2020'); //$tag = array('חברים');
                 break;
             case 'B':
-                $tag = array('סטודנטים');
+                $tag = array('סטודנטים 2020'); //$tag = array('סטודנטים');
                 break;
             case 'C':
-                $tag = array('עמיתים');
+                $tag = array('עמיתים 2020'); //$tag = array('עמיתים');
                 break;
             case 'D':
                 $tag = array('ידידים');

@@ -42,6 +42,7 @@ if ( function_exists( 'wc_get_account_menu_items' ) && get_theme_mod( 'wc_accoun
 				<div class="text-center social-login">
 					<?php if ( ! $is_facebook_login && ! $is_google_login ) {
 						if ( is_lost_password_page() || is_account_page() ) {
+							echo '<h3 class="uppercase mb-0">' . 'שימו לב! יש להסדיר תשלום לארגון טרם הרשמה למערכת האתר. לתשלום דמי חבר <a href="https://www.behavior-analyst.co.il/create-new-account-form/" class="loglink">לחץ כאן</a>' . '</h3>';
 							echo '<h1 class="uppercase mb-0">' . 'הרשמה לאתר' . '</h1>';
 						} else {
 							echo '<h1 class="uppercase mb-0">' . get_the_title() . '</h1>';

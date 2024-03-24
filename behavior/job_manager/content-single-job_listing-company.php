@@ -30,7 +30,7 @@ if ( ! get_the_company_name() ) {
 	</p>
 
     <p class="email">
-        <?php the_company_email( '<strong>', '</strong>' ); ?>
+        <?php the_company_email( ); ?>
     </p>
 
     <p class="phone">
