@@ -1,0 +1,248 @@
+.absolute-footer, html {
+    background-color: #fff !important;
+}
+.account-registration-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5px 15px;
+}
+@media only screen and (min-width: 768px) {
+    .account-registration-wrapper {
+        padding: 0;
+    }
+}
+.account-registration-wrapper .logo {
+    margin: 15px 0;
+}
+.account-registration-wrapper h1 {
+    margin: 30px 0;
+    text-align: center;
+}
+.account-registration-wrapper .error {
+    color: rgba(219, 0, 0, 0.81);
+}
+/* buttons */
+.member-types {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 30px;
+}
+@media only screen and (min-width: 768px) {
+    .member-types {
+        width: 70%;
+    }
+}
+@media only screen and (min-width: 1024px) {
+    .member-types {
+        width: 40%;
+    }
+}
+.member-types .type {
+    padding: 10px 15px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 40%;
+    margin: 10px 0;
+}
+@media only screen and (min-width: 768px) {
+    .member-types .type {
+        width: auto;
+        margin: 0;
+    }
+}
+.member-types .type.active {
+    background-color: #00a0d2;
+    color: #fff;
+}
+.form-wrapper {
+    width: 100%;
+    text-align: right;
+    margin: 0 auto;
+}
+@media only screen and (min-width: 768px) {
+    .form-wrapper {
+        width: 80%;
+    }
+}
+.form-wrapper form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    color: #000;
+}
+.form-wrapper form .field-wrapper,
+.form-wrapper form .field-wrapper > span{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+}
+.form-wrapper form .field-wrapper.pelepay-btn {
+    flex-direction: row;
+    margin: 30px 0 10px;
+}
+@media only screen and (min-width: 768px) {
+    .form-wrapper form .field-wrapper,
+    .form-wrapper form .field-wrapper > span{
+        flex-direction: row;
+        align-items: center;
+    }
+}
+.form-wrapper form .field-wrapper.space-between {
+    justify-content: space-between;
+}
+.form-wrapper form .field-wrapper > span,
+.form-wrapper form .field-wrapper input,
+.form-wrapper form .field-wrapper label {
+    margin: 5px 0;
+    width: 100%;
+}
+@media only screen and (min-width: 768px) {
+    .form-wrapper form .field-wrapper > span {
+        width: 32.5%;
+    }
+    .form-wrapper form .field-wrapper > span.user-email {
+        width: 67%;
+    }
+    .form-wrapper form .field-wrapper input,
+    .form-wrapper form .field-wrapper label {
+        width: 16.5%;
+    }
+    .form-wrapper form .field-wrapper > span input,
+    .form-wrapper form .field-wrapper > span label {
+        width: 100%;
+    }
+}
+.form-wrapper form .field-wrapper label {
+    max-width: 142px;
+}
+.form-wrapper form .field-wrapper label:not(:first-child) {
+    margin-right: 15px;
+}
+#user-email {
+    width: 76.7%;
+}
+.form-wrapper form .field-wrapper .block-fields.column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin: 20px 0;
+}
+.form-wrapper form .field-wrapper .block-fields p {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+}
+.form-wrapper form .field-wrapper .block-fields p input {
+    width: auto;
+    margin-right: 17px;
+    margin-left: 20px;
+}
+.form-wrapper form .field-wrapper label,
+.form-wrapper form .field-wrapper span,
+.form-wrapper form .field-wrapper .block-name {
+    font-weight: 700;
+    min-width: 13%;
+}
+.form-wrapper form .field-wrapper label {
+    min-width: 14.2%;
+}
+.form-wrapper form .field-wrapper.space-between label {
+    min-width: 13.3%;
+}
+.form-footer {
+    padding-bottom: 30px;
+}
+.apply-coupon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 2.507em;
+    padding: 0 15px;
+    margin-right: 15px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.field-wrapper .message {
+    margin-right: 10px;
+    color: green;
+}
+.field-wrapper .message.error {
+    color: red;
+}
+form label.error {
+    position: absolute;
+    top: -22px;
+    max-width: 300px !important;
+    width: 300px !important;
+}
+form input.error {
+    border-color: red;
+}
+.required label:first-child::after,
+.block-name.required::after {
+    content: '*';
+    color: red;
+    margin: 0 2px;
+}
+#pelepay-btn {
+    width: auto;
+    margin: 0 20px;
+}
+.auth-dialog .text {
+    color: #000;
+}
+.auth-dialog .login-btn {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    border-radius: 4px;
+    color: #000;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: #f8ae5c;
+}
+.job_listing .read-more {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    float: left;
+    font-family: "Heebo", Sans-serif;
+    font-weight: 500;
+    background-color: #FCCE77;
+    font-size: 15px;
+    padding: 12px 24px !important;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    color: #fff;
+}
+.job_listing .read-more:hover {
+    background-color: #FCCE77 !important;
+    color: #fff;
+}
+.rp4wp-related-job_listing>ul li.job_listing a div.location, .rp4wp-related-job_listing>ul li.no_job_listings_found a div.location, ul.job_listings li.job_listing a div.location, ul.job_listings li.no_job_listings_found a div.location {
+    text-align: center;
+    color: #000;
+}
+.single-job_listing .author-box {
+    display: none;
+}
+div.elementor-widget-button a.elementor-button, div.elementor-widget-button .elementor-button {
+    background-color: #FCCE77;
+}

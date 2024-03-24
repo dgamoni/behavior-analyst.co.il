@@ -1,0 +1,27 @@
+/*
+Theme Name: behavior
+Description: This is a child theme for Flatsome Theme
+Author: UX Themes
+Template: flatsome
+Version: 3.0
+*/
+
+/*************** ADD CUSTOM CSS HERE.   ***************/
+.job_listing_preview_title input[type='submit'].job-manager-button-edit-listing, .job_listing_preview_title input[type='submit'].job-manager-button-submit-listing {
+	background-color: #2A9776;
+}
+.nav-dropdown {
+    top: 57px;
+}
+
+@media only screen and (max-width: 48em) {
+/*************** ADD MOBILE ONLY CSS HERE  ***************/
+	.job_listing_preview_title {
+	    display: flex;
+	    flex-direction: column-reverse;
+	}
+	.job_listing_preview_title h2 {
+	    text-align: center;
+	    line-height: 46px;
+	}
+}
