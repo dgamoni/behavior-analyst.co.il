@@ -91,13 +91,50 @@ class Member {
                 //error_log(print_r(json_encode($membership_data), true));
 
                 update_user_meta($user_id, self::$meta_key_data_name, json_encode($membership_data, JSON_UNESCAPED_UNICODE));
+                update_user_meta($user_id, 'membership_payment_date', time());
 
                 $this->setUserData($user_id, $membership_data);
 
                 $this->sendMembershipData($membership_data, $params['email'] );
 
                 $this->subscribeMember($params['email'], $params['firstname'], $params['lastname'], $params['phone'], $params['payfor']);
+            
+            } else {
+
+                $user = get_user_by('email', $params['email'] );
+                $user_id = $user->ID;
+                 update_user_meta($user_id, $this->meta_key_number_name, $this->account_number);
+
+                $membership_data = array(
+                    'account_number' => $this->account_number,
+                    'membership_type' => $this->membership_types[$membership_type],
+                    'payment_date' => time(),
+                    'transaction_index' => $params['index']
+                );
+
+                $draft_data = self::getDraftMemberData($params['email']);
+
+                //error_log(print_r($draft_data, true));
+
+                if (!empty($draft_data)) {
+                    $membership_data = array_merge($membership_data, $draft_data);
+                    self::removeDraftMemberData($params['email']);
+                }
+
+                //error_log(print_r('DATA', true));
+                //error_log(print_r(json_encode($membership_data), true));
+
+                update_user_meta($user_id, self::$meta_key_data_name, json_encode($membership_data, JSON_UNESCAPED_UNICODE));
+                update_user_meta($user_id, 'membership_payment_date', time());
+
+                update_user_meta($user_id, 'active_member', 'true');
+                $this->sendMembershipData($membership_data, $params['email'], true );
+                //$this->subscribeMember($params['email'], $params['firstname'], $params['lastname'], $params['phone'], $params['payfor']);
+                              
+
             }
+
+
         }
 
         //error_log('USER-DATA');
@@ -109,7 +146,7 @@ class Member {
         return $user_id;
     }
 
-    private function sendMembershipData($membership_data, $email ) {
+    private function sendMembershipData($membership_data, $email, $update = false ) {
         $html = '';
 
         foreach ($membership_data as $key => $value) {
@@ -140,8 +177,12 @@ HTML;
 
         add_filter( 'wp_mail_content_type', [$this, 'set_html_content_type'] );
 
-
-        wp_mail( $this->additional_emails, 'New member', $html);
+        if ( $update ) {
+            wp_mail( $this->additional_emails, 'Update member', $html);
+        } else {
+            wp_mail( $this->additional_emails, 'New member', $html);
+        }
+        
 
         remove_filter( 'wp_mail_content_type', [$this, 'set_html_content_type'] );
 
@@ -299,6 +340,7 @@ HTML;
 
     public function getMembers($filter) {
         $filter = !empty($filter) ? $filter . '&meta_key=' . $this->meta_key_number_name : 'meta_key=' . $this->meta_key_number_name;
+        //$filter = !empty($filter) ? $filter . '&meta_key=payment_date' : 'meta_key=payment_date';
         //var_dump($filter);
 
         return $members = get_users($filter);

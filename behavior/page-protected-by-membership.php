@@ -83,3 +83,22 @@ if (is_user_logged_in()) {
     wp_redirect( '/התחברות-2/' . '?redirect-to=' . get_permalink() . "&check-membership={$required_membership}" );
 }
 
+
+// update members
+    // $members = get_users('meta_key=account_number');
+    // foreach ($members as $key => $line) {
+    //         $json = str_replace('\\\'', '\\\\\'', get_user_meta($line->data->ID, 'membership_data', true));
+    //         $membership_data = json_decode($json, true);
+    //         // echo "<pre style='display:none'>", var_dump($membership_data['payment_date']), "</pre>";
+    //         // update_user_meta($line->data->ID, 'membership_payment_date', $membership_data['payment_date']);
+       
+    // }
+    // var_dump($key);
+
+// $members = get_users('meta_key=membership_data');
+// $members_emails = array();
+//         foreach ($members as $key => $member) {
+//             array_push($members_emails, $member->data->user_email);
+//         }
+
+//         var_dump($members_emails);

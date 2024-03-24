@@ -33,6 +33,8 @@ do_action( 'woocommerce_before_lost_password_form' );
 
 	<?php do_action( 'woocommerce_lostpassword_form' ); ?>
 
+	<p><?php echo __(  'שם המשתמש היא כתובת המייל בה השתמשת בעת תשלום דמי חבר לארגון מנת”ה', 'behavior-woocommerce' ) ?></p>
+
 	<p class="woocommerce-form-row form-row">
 		<input type="hidden" name="wc_reset_password" value="true" />
 		<button type="submit" class="woocommerce-Button button" value="<?php esc_attr_e( 'יצירת ססמה', 'behavior-woocommerce' ); ?>"><?php esc_html_e( 'יצירת ססמה', 'behavior-woocommerce' ); ?></button>

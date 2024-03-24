@@ -120,6 +120,7 @@ function clear_advert_main_transient() {
                 update_user_meta($new_mem_id, 'membership_data', json_encode($membership_data, JSON_UNESCAPED_UNICODE));
                 update_user_meta($new_mem_id, 'account_number', $account_number);
                 update_user_meta($new_mem_id, 'active_member', 'true');
+                update_user_meta($new_mem_id, 'membership_payment_date', $membership_date);
 
             endforeach;
                 

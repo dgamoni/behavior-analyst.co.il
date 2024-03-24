@@ -20,8 +20,10 @@ class MembersTable extends WP_List_Table {
     function get_columns(){
         $columns = array(
             'cb' => '<input type="checkbox" />',
+            'key' => 'Key',
             'ID' => 'ID',
             'user_email' => 'Email',
+            'phone'     => 'Phone',
             'user_nicename' => 'Full Name',
             'membership_type' => 'Membership Type',
             'account_number' => 'Account Number',
@@ -60,8 +62,10 @@ HTML;
 
     function column_default( $item, $column_name ) {
         switch( $column_name ) {
+            case 'key':
             case 'ID':
             case 'user_email':
+            case 'phone':
             case 'user_nicename':
             case 'membership_type':
             case 'account_number':
@@ -76,8 +80,10 @@ HTML;
 
     function get_sortable_columns() {
         $sortable_columns = array(
+            'key' => array('key',true),
             'ID' => array('ID',true),
             'user_email' => array('user_email',true),
+            'phone' => array('phone',true),
             'user_nicename' => array('user_nicename',true),
             'membership_type' => array('membership_type',true),
             'account_number' => array('account_number',false),
@@ -96,13 +102,20 @@ HTML;
     private function getItemsData() {
         $items = array();
         $filter  = $this->usort_reorder();
-        $members = $this->member->getMembers($filter);
+        //$members = $this->member->getMembers($filter);
+
+        if ( !empty($_GET['order']) && !empty($_GET['orderby']) ) {
+            $members = $this->member->getMembers($filter);
+        } else {
+            $members = get_users('orderby=meta_value&meta_key=membership_payment_date&order=asc');
+        }
+        
         //var_dump($members);
 
         //var_dump( $this->member->getMembershipData(356) );
 
 
-        foreach ($members as $member) {
+        foreach ($members as $key => $member) {
             $membership_data = $this->member->getMembershipData($member->ID);
             $payment_date = !empty($membership_data['payment_date']) ? get_date_from_gmt( date( 'Y-m-d H:i:s', $membership_data['payment_date'] ), 'F j, Y H:i:s' ) : '';
             
@@ -122,9 +135,11 @@ HTML;
             // }            
 
             $items[] = array(
+                'key' => $key+1,
                 'ID' => $member->ID,
                 'user_nicename' => $membership_data['first-name'] . ' ' . $membership_data['last-name'],
                 'user_email' => $member->user_email,
+                'phone' => $membership_data['cell-phone'],
                 'membership_type' => $membership_data['membership_type'],
                 'account_number' => $membership_data['account_number'],
                 'payment_date' => $payment_date,

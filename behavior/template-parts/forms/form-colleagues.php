@@ -160,6 +160,13 @@ $html = <<<HTML
            alt="Make payments with pelepay">
         </div>
         <p>לאחר קוד קופון <span class="newprice">99</span> ש"ח</p>
+        
+        <a href="https://www.behavior-analyst.co.il/wp-content/uploads/2019/12/איך-מקבלים-קוד-קופון.pdf" target="_blank" class="nice_but elementor-button-link elementor-button elementor-size-sm" role="button">
+            <span class="elementor-button-content-wrapper">
+                <span class="elementor-button-text">איך מקבלים קוד קופון</span>
+            </span>
+        </a>
+        
     </form>
 
     <div class="form-footer">

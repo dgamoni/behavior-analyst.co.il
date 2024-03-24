@@ -2,3 +2,23 @@
     width: 3em;
     vertical-align: top;
 } 
+
+.toplevel_page_members .manage-column.column-ID {
+	display: none;
+}
+.toplevel_page_members .column-ID {
+	display: none;
+}
+.toplevel_page_members #key {
+    width: 60px;
+}
+.toplevel_page_members #user_email {
+	/*width: 216px;*/
+}
+
+.tools_page_advanced-cron-manager #post-body-content {
+    float: none;
+}
+.tools_page_advanced-cron-manager #poststuff #post-body {
+    margin-right: 0;
+}
