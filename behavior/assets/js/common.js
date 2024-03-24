@@ -20,7 +20,8 @@
 
         loadForm();
 
-        $(document).on('submit', '#pelepay-form', function () {
+        $(document).on('submit', '#pelepay-form', function (e) {
+            e.preventDefault();
             var firstname = $(this).find('#first-name').val();
             var lastname = $(this).find('#last-name').val();
             var email = $(this).find('#user-email').val();
@@ -32,6 +33,8 @@
             $('#pelepay-phone').val(phone_number);
 
             var data = new FormData($(this)[0]);
+            console.log($(this));
+            console.log(data);
 
             $.ajax({
                 type: "POST",
@@ -44,9 +47,11 @@
                 timeout: 600000,
                 success: function (data) {
                     console.log("SUCCESS : ", data);
+                    $('#pelepay-form')[0].submit();
                 },
                 error: function (e) {
                     console.log("ERROR : ", e);
+                    alert('Something went wrong. Try again later');
                 }
             });
 

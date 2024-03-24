@@ -53,8 +53,18 @@ class Member {
     public function registerNewPayMember($params) {
         $user_id = false;
 
+        error_log( "registerNewPayMember params", 1,"monothemes@gmail.com");
+        error_log( "registerNewPayMember params" );
+        error_log( print_r($params, true), 1,"monothemes@gmail.com");
+        error_log( print_r($params, true) );
+
+
         if (!$this->checkTransaction($params)) {
             return $user_id;
+        } else {
+
+            error_log( "error registerNewPayMember checkTransaction", 1,"monothemes@gmail.com");
+            error_log( "error registerNewPayMember checkTransaction" );
         }
 
         if (!empty($params['email'])) {
@@ -82,6 +92,12 @@ class Member {
 
                 //error_log(print_r($draft_data, true));
 
+                error_log( "registerNewPayMember draft_data", 1,"monothemes@gmail.com");
+                error_log( "registerNewPayMember draft_data" );
+                error_log( print_r($draft_data, true), 1,"monothemes@gmail.com");
+                error_log( print_r($draft_data, true) );
+
+
                 if (!empty($draft_data)) {
                     $membership_data = array_merge($membership_data, $draft_data);
                     self::removeDraftMemberData($params['email']);
@@ -89,6 +105,11 @@ class Member {
 
                 //error_log(print_r('DATA', true));
                 //error_log(print_r(json_encode($membership_data), true));
+
+                error_log( "registerNewPayMember membership_data", 1,"monothemes@gmail.com");
+                error_log( "registerNewPayMember membership_data" );
+                error_log( print_r(json_encode($membership_data), true), 1,"monothemes@gmail.com");
+                error_log( print_r(json_encode($membership_data), true) );                
 
                 update_user_meta($user_id, self::$meta_key_data_name, json_encode($membership_data, JSON_UNESCAPED_UNICODE));
                 update_user_meta($user_id, 'membership_payment_date', time());
@@ -144,6 +165,17 @@ class Member {
 
         //error_log('USER-META');
         //error_log(print_r(get_user_meta($user_id), true));
+
+                error_log( "registerNewPayMember USER-DATA", 1,"monothemes@gmail.com");
+                error_log( "registerNewPayMember USER-DATA" );
+                error_log( print_r( get_user_by( 'id', $user_id ), true), 1,"monothemes@gmail.com");
+                error_log( print_r( get_user_by( 'id', $user_id ), true) ); 
+
+                error_log( "registerNewPayMember USER-META", 1,"monothemes@gmail.com");
+                error_log( "registerNewPayMember USER-META" );
+                error_log( print_r( get_user_meta($user_id), true), 1,"monothemes@gmail.com");
+                error_log( print_r( get_user_meta($user_id), true) ); 
+
 
         return $user_id;
     }
@@ -202,6 +234,11 @@ HTML;
     public function registerNewFreeMember($params) {
         $this->initHooks();
 
+
+                error_log( "registerNewFreeMember", 1,"monothemes@gmail.com");
+                error_log( "registerNewFreeMember" );
+ 
+
         $user_id = false;
 
         if (!empty($params['user-email'])) {
@@ -210,6 +247,12 @@ HTML;
             $this->account_number = $this->generateAccountNumber($this->free_membership_type, $this->account_number_length);
             //error_log('ACCOUNT NUMBER');
             //error_log(print_r($this->account_number, true));
+
+                error_log( "registerNewFreeMember account_number", 1,"monothemes@gmail.com");
+                error_log( "registerNewFreeMember account_number" );
+                error_log( print_r( $this->account_number, true), 1,"monothemes@gmail.com");
+                error_log( print_r( $this->account_number, true) ); 
+
             $user_id = register_new_user($username, $params['user-email']);
 
             if (!is_wp_error($user_id)) {
@@ -224,12 +267,26 @@ HTML;
 
                 //error_log(print_r($membership_data, true));
 
+                error_log( "registerNewFreeMember membership_data", 1,"monothemes@gmail.com");
+                error_log( "registerNewFreeMember membership_data" );
+                error_log( print_r( $membership_data, true), 1,"monothemes@gmail.com");
+                error_log( print_r( $membership_data, true) ); 
+
+
                 update_user_meta($user_id, self::$meta_key_data_name, json_encode($membership_data, JSON_UNESCAPED_UNICODE));
 
                 $this->setUserData($user_id, $params);
 
                 $this->sendMembershipData($membership_data);
+            } else {
+                error_log( "error registerNewFreeMember is_wp_error user_id", 1,"monothemes@gmail.com");
+                error_log( "error registerNewFreeMember is_wp_error user_id" );
+
             }
+
+        } else {
+                error_log( "error registerNewFreeMember empty user-email", 1,"monothemes@gmail.com");
+                error_log( "error registerNewFreeMember empty user-email" );
         }
 
         return $user_id;
@@ -392,6 +449,11 @@ HTML;
         error_log(print_r(json_encode($data), true));
         error_log(print_r(json_last_error(), true));
 
+        error_log( "error saveDraftMemberData", 1,"monothemes@gmail.com");
+        error_log( print_r($data, true), 1,"monothemes@gmail.com");
+        error_log( print_r(json_encode($data), true), 1,"monothemes@gmail.com");
+        error_log( print_r(json_last_error(), true), 1,"monothemes@gmail.com");
+
         update_option('draft-member-' . $data['email'], json_encode($data));
     }
 
@@ -430,6 +492,11 @@ HTML;
         $target = self::checkFolder($file_data['form_type'], $file_type, $email) . '/' . $newname;
         move_uploaded_file($file_data['tmp_name'], $target);
 
+
+        error_log( "saveFile", 1,"monothemes@gmail.com");
+        error_log( "saveFile target", 1,"monothemes@gmail.com");
+        error_log( print_r($target, true), 1,"monothemes@gmail.com");
+
         return $target;
     }
 
@@ -457,6 +524,10 @@ HTML;
         if (!file_exists($path)) {
             mkdir($path, 0755);
         }
+
+        error_log( "checkFolder", 1,"monothemes@gmail.com");
+        error_log( "checkFolder path", 1,"monothemes@gmail.com");
+        error_log( print_r($path, true), 1,"monothemes@gmail.com");        
 
         return $path;
     }

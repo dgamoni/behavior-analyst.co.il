@@ -630,8 +630,16 @@ function ajax_pagination($pagenumber, $pages = '', $range = 4)
 add_action( 'wp_ajax_register-new-free-member', 'register_new_free_member' );
 add_action( 'wp_ajax_nopriv_register-new-free-member', 'register_new_free_member' );
 function register_new_free_member(){
+    error_log( "register_new_free_member", 1,"monothemes@gmail.com");
+    error_log( "register_new_free_member");
+
     if (!empty($_POST)) {
         //error_log(print_r($_POST, true));
+
+        error_log( "register_new_free_member $_POST", 1,"monothemes@gmail.com");
+        error_log( "register_new_free_member $_POST");
+        error_log( print_r($_POST, true), 1,"monothemes@gmail.com");
+        error_log( print_r($_POST, true) );
 
         $member = new Member();
         $status = $member->registerNewFreeMember($_POST);
@@ -648,7 +656,13 @@ HTML;
         }
 
         echo $html;
+    } else {
+
+        error_log( "error empty $_POST", 1, "monothemes@gmail.com");
+        error_log( "error $_POST" );
     }
+
+
 
     wp_die();
 }
@@ -669,12 +683,40 @@ function save_draft_member_data() {
     //error_log(print_r($_POST, true));
     //error_log(print_r($_FILES, true));
     //die();
+
+        error_log( "save-draft-member-data", 1,"monothemes@gmail.com");
+        error_log( "save-draft-member-data" );
+
+
     if (!empty($_POST)) {
+
+        error_log( "save-draft-member-data POST", 1,"monothemes@gmail.com");
+        error_log( "save-draft-member-data POST" );
+        error_log( print_r($_POST, true), 1,"monothemes@gmail.com");
+        error_log( print_r($_POST, true) );
+
         if (!empty($_FILES)) {
+
+            error_log( "save-draft-member-data FILES", 1,"monothemes@gmail.com");
+            error_log( "save-draft-member-data FILES" );
+            error_log( print_r($_FILES, true), 1,"monothemes@gmail.com");
+            error_log( print_r($_FILES, true) );
+
             $_POST['files'] = $_FILES;
+        } else {
+
+            error_log( "error save-draft-member-data empty FILES", 1,"monothemes@gmail.com");
+            error_log( "error save-draft-member-data empty FILES" );
+
         }
 
         Member::saveDraftMemberData(filterPelepayFields($_POST));
+
+    } else {
+
+            error_log( "error save-draft-member-data empty POST", 1,"monothemes@gmail.com");
+            error_log( "error save-draft-member-data empty POST" );
+
     }
 
     wp_die();
@@ -728,14 +770,29 @@ function get_member_data() {
     //error_log(print_r($_GET, true));
     //die();
 
+        error_log( "get_member_data", 1,"monothemes@gmail.com");
+        error_log( "get_member_data" );
+
+
     $response = array(
         'status' => 0,
         'message' => 'Data not found'
     );
 
     if (!empty($_GET['user_id'])) {
+
+        error_log( "get_member_data $_GET", 1,"monothemes@gmail.com");
+        error_log( "get_member_data $_GET" );
+        error_log( print_r($_GET, true), 1,"monothemes@gmail.com");
+        error_log( print_r($_GET, true) );
+
         $member_data = Member::getMembershipData($_GET['user_id']);
         //error_log(print_r($member_data, true));
+
+        error_log( "get_member_data $member_data", 1,"monothemes@gmail.com");
+        error_log( "get_member_data $member_data" );
+        error_log( print_r($member_data, true), 1,"monothemes@gmail.com");
+        error_log( print_r($member_data, true) );
 
         $member_data['payment_date'] = get_date_from_gmt( date( 'Y-m-d H:i:s', $member_data['payment_date'] ), 'F j, Y H:i:s');
 
@@ -747,6 +804,11 @@ function get_member_data() {
             } else {
                 $member_data['file_path'] = str_replace($_SERVER['DOCUMENT_ROOT'], '', $member_data['file_path']);
             }
+        } else {
+
+            error_log( "error get_member_data empty member_data file_path", 1,"monothemes@gmail.com");
+            error_log( "error get_member_data empty member_data file_path" );
+
         }
 
         if (!empty($member_data)) {
@@ -755,7 +817,14 @@ function get_member_data() {
                 'message' => '',
                 'member_data' => $member_data
             );
+        } else {
+            error_log( "error get_member_data empty member_data", 1,"monothemes@gmail.com");
+            error_log( "error get_member_data empty member_data" );
+
         }
+    } else {
+             error_log( "error get_member_data empty GET user_id", 1,"monothemes@gmail.com");
+            error_log( "error get_member_data empty GET user_id" );       
     }
 
     wp_send_json($response);
